@@ -7,24 +7,28 @@ class AuthRepository {
   late User? user;
 
   Future<void> signInWithGoogle() async {
-    GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+    try {
+      final googleSignInAccount = await _googleSignIn.signIn();
 
-    GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
+      GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
 
-    AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
 
-    UserCredential userCredentials =
-        await _auth.signInWithCredential(credential);
+      UserCredential userCredentials =
+          await _auth.signInWithCredential(credential);
 
-    user = userCredentials.user;
-    if (user != null) {
-      print(user!.displayName);
-      print(user!.email);
-      print(user!.photoURL);
+      user = userCredentials.user;
+      if (user != null) {
+        print(user!.displayName);
+        print(user!.email);
+        print(user!.photoURL);
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
@@ -42,5 +46,24 @@ class AuthRepository {
     return user;
   }
 
-  Future<void> signOut() async {}
+  Future<void> signUp({
+    required String email,
+    required String password,
+  }) async {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    print(userCredential.credential);
+  }
+
+  Future<void> signOut() async {
+    _auth.signOut();
+    _googleSignIn.signOut();
+  }
+
+  bool isAuthenticated() {
+    return FirebaseAuth.instance.currentUser != null ? true : false;
+  }
 }
