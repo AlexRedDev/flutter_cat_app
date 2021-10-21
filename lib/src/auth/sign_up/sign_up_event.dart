@@ -10,4 +10,4 @@ class PasswordChanded extends SignUpEvent {
   PasswordChanded(this.password);
 }
 
-class RegistrateAndAuthorization extends SignUpEvent {}
+class SignUpSubmitted extends SignUpEvent {}

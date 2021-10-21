@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cat_app/src/app_navigator.dart';
-import 'package:flutter_cat_app/src/app_state.dart';
 import 'package:flutter_cat_app/src/auth/repository/auth_repository.dart';
+import 'app/app_bloc.dart';
+import 'app/app_state.dart';
 
-import 'app_bloc.dart';
-import 'auth/models/user.dart';
 
 class App extends StatelessWidget {
   final AuthRepository authRepository = AuthRepository();
   App({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,9 +19,9 @@ class App extends StatelessWidget {
         create: (context) => AppBloc(
             authRepository: authRepository,
             state: authRepository.isAuthenticated()
-                ? Authenticated(user: User(email: ''))
+                ? Authenticated(user: authRepository.getUser())
                 : Unauthenticated()),
-        child: AppNavigator(),
+        child: const AppNavigator(),
       ),
     ));
   }

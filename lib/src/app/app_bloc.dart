@@ -1,7 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cat_app/src/app_event.dart';
-import 'package:flutter_cat_app/src/app_state.dart';
 import 'package:flutter_cat_app/src/auth/repository/auth_repository.dart';
+
+import 'app_event.dart';
+import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   final AuthRepository authRepository;
@@ -16,7 +17,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(Authenticated(user: event.user));
   }
 
-  void _onLogoutRequest(AppLogoutRequest event, Emitter<AppState> emit) {
+  Future<void> _onLogoutRequest(
+      AppLogoutRequest event, Emitter<AppState> emit) async {
+    await authRepository.signOut();
     emit(Unauthenticated());
   }
 }

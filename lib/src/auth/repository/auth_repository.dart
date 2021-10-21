@@ -4,9 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  late User? user;
 
-  Future<void> signInWithGoogle() async {
+  Future<User> signInWithGoogle() async {
     try {
       final googleSignInAccount = await _googleSignIn.signIn();
 
@@ -21,11 +20,11 @@ class AuthRepository {
       UserCredential userCredentials =
           await _auth.signInWithCredential(credential);
 
-      user = userCredentials.user;
-      if (user != null) {
-        print(user!.displayName);
-        print(user!.email);
-        print(user!.photoURL);
+      final user = userCredentials.user;
+      if (user == null) {
+        throw Exception('User error google');
+      } else {
+        return user;
       }
     } catch (e) {
       throw Exception(e);
@@ -34,7 +33,7 @@ class AuthRepository {
 
   Future<void> signInWithFaceBook() async {}
 
-  Future<User?> signInWithCredentials({
+  Future<User> signInWithCredentials({
     required String email,
     required String password,
   }) async {
@@ -43,19 +42,32 @@ class AuthRepository {
       password: password,
     );
     final user = _auth.currentUser;
-    return user;
+    if (user == null) {
+      throw Exception('Error with Credentials login');
+    } else {
+      return user;
+    }
   }
 
-  Future<void> signUp({
+  Future<User> signUp({
     required String email,
     required String password,
   }) async {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    print(userCredential.credential);
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = userCredential.user;
+      if (user == null) {
+        throw Exception('User error SignUp');
+      } else {
+        return user;
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
+    }
   }
 
   Future<void> signOut() async {
@@ -65,5 +77,9 @@ class AuthRepository {
 
   bool isAuthenticated() {
     return FirebaseAuth.instance.currentUser != null ? true : false;
+  }
+
+  User getUser() {
+    return _auth.currentUser!;
   }
 }

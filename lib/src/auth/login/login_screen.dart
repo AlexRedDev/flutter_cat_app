@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cat_app/src/app_bloc.dart';
-import 'package:flutter_cat_app/src/auth/auth_navigator_cubit.dart';
-import 'package:flutter_cat_app/src/auth/bloc/login_bloc.dart';
-import 'package:flutter_cat_app/src/auth/bloc/login_event.dart';
-import 'package:flutter_cat_app/src/auth/bloc/login_state.dart';
+import 'package:flutter_cat_app/src/app/app_bloc.dart';
+import 'package:flutter_cat_app/src/auth/login/login_bloc.dart';
 import 'package:flutter_cat_app/src/auth/repository/auth_repository.dart';
 
+import '../auth_navigator_cubit.dart';
+import '../submission_status.dart';
+import 'login_event.dart';
+import 'login_state.dart';
+
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +30,7 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _form(),
-                  _loginButton(context),
-                  _auth(context),
+                  _authMethod(context),
                 ],
               ),
               _signUpButton(context),
@@ -40,14 +42,23 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _form() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _usernameTextFormField(),
-          _passwordTextFormField(),
-        ],
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        final formStatus = state.formStatus;
+        if (formStatus is SubmissionFailed) {
+          _showSnackBar(context, formStatus.exception);
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _usernameTextFormField(),
+            _passwordTextFormField(),
+            _loginButton()
+          ],
+        ),
       ),
     );
   }
@@ -79,8 +90,7 @@ class LoginScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: TextFormField(
             obscureText: true,
-            validator: (value) =>
-                state.isValidPassword ? null : 'short password',
+            validator: (_) => state.isValidPassword ? null : 'short password',
             onChanged: (value) =>
                 context.read<LoginBloc>().add(PasswordChanged(value)),
             decoration: const InputDecoration(
@@ -94,18 +104,23 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _auth(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextButton(
-            onPressed: () => context.read<LoginBloc>().add(SignInWithGoogle()),
-            child: Text('Google')),
-        TextButton(
-            onPressed: () =>
-                context.read<LoginBloc>().add(SignInWithFacebook()),
-            child: Text('Facebook')),
-      ],
+  Widget _authMethod(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+                onPressed: () =>
+                    context.read<LoginBloc>().add(SignInWithGoogle()),
+                child: Text('Google')),
+            TextButton(
+                onPressed: () =>
+                    context.read<LoginBloc>().add(SignInWithFacebook()),
+                child: Text('Facebook')),
+          ],
+        );
+      },
     );
   }
 
@@ -115,14 +130,24 @@ class LoginScreen extends StatelessWidget {
         child: Text('I dont have account'));
   }
 
-  Widget _loginButton(BuildContext context) {
+  Widget _loginButton() {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return ElevatedButton(
-            onPressed: () =>
-                context.read<LoginBloc>().add(SignInWithCredentials()),
-            child: Text('Login'));
+        return state.formStatus is FormSubmitting
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate())
+                    context.read<LoginBloc>().add(SignInWithCredentials());
+                },
+                child: Text('Login'),
+              );
       },
     );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

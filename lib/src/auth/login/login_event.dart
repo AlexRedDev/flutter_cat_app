@@ -15,3 +15,4 @@ class SignInWithCredentials extends LoginEvent {}
 class SignInWithGoogle extends LoginEvent {}
 
 class SignInWithFacebook extends LoginEvent {}
+

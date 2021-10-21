@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_cat_app/src/auth/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AppEvent extends Equatable {}
 
