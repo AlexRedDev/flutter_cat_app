@@ -28,8 +28,8 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 150,
-                    width: 150,
+                    height: 100,
+                    width: 100,
                     child: user.photoURL != null
                         ? CircleAvatar(
                             radius: 20,

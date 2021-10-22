@@ -45,7 +45,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
 
       emit(state.copyWith(formStatus: SubmissionSuccess()));
-      Future.delayed(Duration(seconds: 1));
       appBloc.add(AppUserChanged(user: user));
     } catch (e) {
       emit(state.copyWith(formStatus: SubmissionFailed(e.toString())));

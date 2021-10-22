@@ -41,7 +41,7 @@ class AuthRepository {
 
       UserCredential userCredential =
           await _authFirebase.signInWithCredential(facebookAuthCredentials);
-          
+
       final user = userCredential.user;
       if (user == null) {
         throw Exception('User error facebook');
@@ -57,15 +57,19 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    await _authFirebase.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    final user = _authFirebase.currentUser;
-    if (user == null) {
-      throw Exception('Error with Credentials login');
-    } else {
-      return user;
+    try {
+      await _authFirebase.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = _authFirebase.currentUser;
+      if (user == null) {
+        throw Exception('Error with Credentials login');
+      } else {
+        return user;
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message);
     }
   }
 

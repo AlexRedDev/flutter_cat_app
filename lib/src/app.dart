@@ -5,7 +5,6 @@ import 'package:flutter_cat_app/src/auth/repository/auth_repository.dart';
 import 'app/app_bloc.dart';
 import 'app/app_state.dart';
 
-
 class App extends StatelessWidget {
   final AuthRepository authRepository = AuthRepository();
   App({Key? key}) : super(key: key);
@@ -13,16 +12,18 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: RepositoryProvider(
-      create: (context) => authRepository,
-      child: BlocProvider(
-        create: (context) => AppBloc(
-            authRepository: authRepository,
-            state: authRepository.isAuthenticated()
-                ? Authenticated(user: authRepository.getUser())
-                : Unauthenticated()),
-        child: const AppNavigator(),
+      debugShowCheckedModeBanner: false,
+      home: RepositoryProvider(
+        create: (context) => authRepository,
+        child: BlocProvider(
+          create: (context) => AppBloc(
+              authRepository: authRepository,
+              state: authRepository.isAuthenticated()
+                  ? Authenticated(user: authRepository.getUser())
+                  : Unauthenticated()),
+          child: const AppNavigator(),
+        ),
       ),
-    ));
+    );
   }
 }

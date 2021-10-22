@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cat_app/src/home/cat/cat_screen.dart';
+import 'package:flutter_cat_app/src/home/favorite/favorite_screen.dart';
 import 'package:flutter_cat_app/src/home/home_navigator_cubit.dart';
 import 'package:flutter_cat_app/src/home/profile/profile_screen.dart';
 
@@ -13,9 +15,9 @@ class HomeScreen extends StatelessWidget {
         builder: (context, state) {
           switch (state) {
             case HomeState.home:
-              return Center(child: Text('Home'));
+              return CatScreen();
             case HomeState.favorite:
-              return Center(child: Text('Favorite'));
+              return FavoriteScreen();
             case HomeState.profile:
               return ProfileScreen();
           }
