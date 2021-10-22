@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _authFirebase = FirebaseAuth.instance;
+  final FacebookAuth _authFacebook = FacebookAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<User> signInWithGoogle() async {
@@ -18,7 +20,7 @@ class AuthRepository {
       );
 
       UserCredential userCredentials =
-          await _auth.signInWithCredential(credential);
+          await _authFirebase.signInWithCredential(credential);
 
       final user = userCredentials.user;
       if (user == null) {
@@ -31,17 +33,35 @@ class AuthRepository {
     }
   }
 
-  Future<void> signInWithFaceBook() async {}
+  Future<User> signInWithFacebook() async {
+    try {
+      final LoginResult loginResult = await _authFacebook.login();
+      final facebookAuthCredentials =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      UserCredential userCredential =
+          await _authFirebase.signInWithCredential(facebookAuthCredentials);
+          
+      final user = userCredential.user;
+      if (user == null) {
+        throw Exception('User error facebook');
+      } else {
+        return user;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
   Future<User> signInWithCredentials({
     required String email,
     required String password,
   }) async {
-    await _auth.signInWithEmailAndPassword(
+    await _authFirebase.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    final user = _auth.currentUser;
+    final user = _authFirebase.currentUser;
     if (user == null) {
       throw Exception('Error with Credentials login');
     } else {
@@ -71,7 +91,7 @@ class AuthRepository {
   }
 
   Future<void> signOut() async {
-    _auth.signOut();
+    _authFirebase.signOut();
     _googleSignIn.signOut();
   }
 
@@ -80,6 +100,6 @@ class AuthRepository {
   }
 
   User getUser() {
-    return _auth.currentUser!;
+    return _authFirebase.currentUser!;
   }
 }

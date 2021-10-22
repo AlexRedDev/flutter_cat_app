@@ -4,7 +4,7 @@ import 'package:flutter_cat_app/src/auth/auth_navigator.dart';
 import 'app/app_bloc.dart';
 import 'app/app_state.dart';
 import 'auth/auth_navigator_cubit.dart';
-import 'home/bottom_navigator_cubit.dart';
+import 'home/home_navigator_cubit.dart';
 import 'home/home_screen.dart';
 
 class AppNavigator extends StatelessWidget {

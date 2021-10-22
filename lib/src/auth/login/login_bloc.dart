@@ -43,11 +43,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         email: state.email,
         password: state.password,
       );
-      
-        emit(state.copyWith(formStatus: SubmissionSuccess()));
-        Future.delayed(Duration(seconds: 1));
-        appBloc.add(AppUserChanged(user: user));
-      
+
+      emit(state.copyWith(formStatus: SubmissionSuccess()));
+      Future.delayed(Duration(seconds: 1));
+      appBloc.add(AppUserChanged(user: user));
     } catch (e) {
       emit(state.copyWith(formStatus: SubmissionFailed(e.toString())));
     }
@@ -70,5 +69,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> _onSignInWithFacebook(
     SignInWithFacebook event,
     Emitter<LoginState> emit,
-  ) async {}
+  ) async {
+    try {
+      emit(state.copyWith(formStatus: FormSubmitting()));
+      final user = await authRepository.signInWithFacebook();
+      emit(state.copyWith(formStatus: SubmissionSuccess()));
+      appBloc.add(AppUserChanged(user: user));
+    } catch (e) {
+      emit(state.copyWith(formStatus: SubmissionFailed(e.toString())));
+    }
+  }
 }

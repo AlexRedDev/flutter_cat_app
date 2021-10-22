@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cat_app/src/home/bottom_navigator_cubit.dart';
+import 'package:flutter_cat_app/src/home/home_navigator_cubit.dart';
+import 'package:flutter_cat_app/src/home/profile/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
             case HomeState.favorite:
               return Center(child: Text('Favorite'));
             case HomeState.profile:
-              return Center(child: Text('Profile'));
+              return ProfileScreen();
           }
         },
       ),
