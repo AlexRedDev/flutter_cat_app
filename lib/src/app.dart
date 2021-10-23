@@ -6,23 +6,21 @@ import 'app/app_bloc.dart';
 import 'app/app_state.dart';
 
 class App extends StatelessWidget {
-  final AuthRepository authRepository = AuthRepository();
   App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _authRepo = context.read<AuthRepository>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RepositoryProvider(
-        create: (context) => authRepository,
-        child: BlocProvider(
-          create: (context) => AppBloc(
-              authRepository: authRepository,
-              state: authRepository.isAuthenticated()
-                  ? Authenticated(user: authRepository.getUser())
-                  : Unauthenticated()),
-          child: const AppNavigator(),
+      home: BlocProvider(
+        create: (context) => AppBloc(
+          authRepository: _authRepo,
+          state: _authRepo.isAuthenticated()
+              ? Authenticated(user: _authRepo.getUser())
+              : Unauthenticated(),
         ),
+        child: const AppNavigator(),
       ),
     );
   }

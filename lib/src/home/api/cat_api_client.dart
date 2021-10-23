@@ -12,21 +12,8 @@ const String _pathCat = '';
 const String _pathFact = '';
 
 class CatApiClient {
-  Future<List<Cat>> fetchCat([int page = 0]) async {
-    final catResponse = await _fetchCatsResponse(page);
-    final factResponse = await _fetchFactResponse();
-    List<Cat> cats = [];
-    for (var i = 0; i < 10; i++) {
-      cats.add(Cat(
-        id: catResponse[i].id,
-        imagUrl: catResponse[i].imgUrl,
-        catFact: factResponse[i].fact,
-      ));
-    }
-    return cats;
-  }
 
-  Future<List<CatResponse>> _fetchCatsResponse([int page = 0]) async {
+  Future<List<CatResponse>> fetchCatsResponse([int page = 0]) async {
     Map<String, String> headers = {
       'x-api-key': _apiKey,
     };
@@ -49,8 +36,8 @@ class CatApiClient {
       throw Exception();
     }
   }
-
-  Future<List<FactResponse>> _fetchFactResponse() async {
+  //Todo: replace FactResponse to simple List of String
+  Future<List<FactResponse>> fetchFactResponse() async {
     Uri uri = Uri(
         scheme: _schemeUri,
         host: 'catfact.ninja',

@@ -18,16 +18,18 @@ class AppNavigator extends StatelessWidget {
           pages: [
             if (state is Unauthenticated)
               MaterialPage(
-                  child: BlocProvider(
-                create: (context) => AuthNavigatorCubit(),
-                child: const AuthNavigator(),
-              )),
+                child: BlocProvider(
+                  create: (context) => AuthNavigatorCubit(),
+                  child: const AuthNavigator(),
+                ),
+              ),
             if (state is Authenticated)
               MaterialPage(
-                  child: BlocProvider(
-                create: (context) => HomeNavigatorCubit(),
-                child: HomeScreen(),
-              ))
+                child: BlocProvider(
+                  create: (context) => HomeNavigatorCubit(),
+                  child: HomeScreen(),
+                ),
+              )
           ],
           onPopPage: (route, result) => route.didPop(result),
         );

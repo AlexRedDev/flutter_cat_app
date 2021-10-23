@@ -1,9 +1,10 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cat_app/src/home/cat/cat_event.dart';
-import 'package:flutter_cat_app/src/home/cat/cat_state.dart';
-import 'package:flutter_cat_app/src/home/repository/cat_repository.dart';
+import 'package:flutter_cat_app/src/home/cat/repository/cat_repository.dart';
+
+import 'cat_event.dart';
+import 'cat_state.dart';
 
 const throttleDuration = Duration(seconds: 1);
 

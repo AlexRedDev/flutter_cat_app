@@ -1,13 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cat_app/src/home/cat/cat_event.dart';
 import 'package:flutter_cat_app/src/home/models/cat.dart';
 import 'package:provider/provider.dart';
 
 import 'cat_bloc.dart';
+import 'cat_event.dart';
 import 'cat_state.dart';
+
 
 class CatScreen extends StatefulWidget {
   CatScreen({Key? key}) : super(key: key);
@@ -138,16 +137,3 @@ class DetailsPage extends StatelessWidget {
     );
   }
 }
-
-
-// ListView.builder(
-//                   itemCount: state.hasReachedMax
-//                       ? state.cats.length
-//                       : state.cats.length + 1,
-//                   controller: _scrollController,
-//                   itemBuilder: (BuildContext context, int index) {
-//                     return index >= state.cats.length
-//                         ? CircularProgressIndicator()
-//                         : CatItem(state.cats[index]);
-//                   },
-//                 );
