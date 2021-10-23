@@ -44,9 +44,9 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () => context.read<AppBloc>().add(AppLogoutRequest()),
-              child: Text('Logout'),
-            )
+                onPressed: () =>
+                    context.read<AppBloc>().add(AppLogoutRequest()),
+                child: Text('Logout'))
           ],
         ),
       ),
