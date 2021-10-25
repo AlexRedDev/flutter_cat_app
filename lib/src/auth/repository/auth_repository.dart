@@ -7,6 +7,7 @@ class AuthRepository {
   final FacebookAuth _authFacebook = FacebookAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  //Rewrite this func
   Future<User> signInWithGoogle() async {
     try {
       final googleSignInAccount = await _googleSignIn.signIn();
@@ -33,6 +34,7 @@ class AuthRepository {
     }
   }
 
+  //Rewrite this func
   Future<User> signInWithFacebook() async {
     try {
       final LoginResult loginResult = await _authFacebook.login();
@@ -53,6 +55,7 @@ class AuthRepository {
     }
   }
 
+  //Rewrite this func
   Future<User> signInWithCredentials({
     required String email,
     required String password,
@@ -73,6 +76,7 @@ class AuthRepository {
     }
   }
 
+  //Rewrite this func
   Future<User> signUp({
     required String email,
     required String password,
@@ -99,11 +103,8 @@ class AuthRepository {
     _googleSignIn.signOut();
   }
 
-  bool isAuthenticated() {
-    return FirebaseAuth.instance.currentUser != null ? true : false;
-  }
+  bool get isAuthenticated =>
+      FirebaseAuth.instance.currentUser != null ? true : false;
 
-  User getUser() {
-    return _authFirebase.currentUser!;
-  }
+  User get getUser => _authFirebase.currentUser!;
 }

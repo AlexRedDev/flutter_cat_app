@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'cat.g.dart';
 
 @HiveType(typeId: 0)
-class Cat {
+class Cat extends Equatable{
   @HiveField(0)
   final String id;
   @HiveField(1)
@@ -11,7 +12,7 @@ class Cat {
   @HiveField(2)
   final String catFact;
   @HiveField(3)
-  final bool saved;
+  bool saved;
 
   Cat({
     required this.id,
@@ -19,4 +20,7 @@ class Cat {
     required this.catFact,
     this.saved = false,
   });
+
+  @override
+  List<Object?> get props => [id, imagUrl, catFact, saved];
 }

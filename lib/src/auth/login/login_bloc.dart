@@ -50,6 +50,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(formStatus: SubmissionFailed(e.toString())));
     }
   }
+
   //Todo: cath PlatformNullException
   Future<void> _onSignInWithGoogle(
     SignInWithGoogle event,

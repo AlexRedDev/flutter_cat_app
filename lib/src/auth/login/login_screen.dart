@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cat_app/src/app/app_bloc.dart';
+import 'package:flutter_cat_app/src/auth/auth_navigator_cubit.dart';
 import 'package:flutter_cat_app/src/auth/login/login_bloc.dart';
+import 'package:flutter_cat_app/src/auth/login/login_event.dart';
+import 'package:flutter_cat_app/src/auth/login/login_state.dart';
 import 'package:flutter_cat_app/src/auth/repository/auth_repository.dart';
-
-import '../auth_navigator_cubit.dart';
-import '../submission_status.dart';
-import 'login_event.dart';
-import 'login_state.dart';
+import 'package:flutter_cat_app/src/auth/submission_status.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);

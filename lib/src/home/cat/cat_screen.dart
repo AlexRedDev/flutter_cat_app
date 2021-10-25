@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_cat_app/src/home/models/cat.dart';
 import 'package:provider/provider.dart';
 
 import 'cat_bloc.dart';
 import 'cat_event.dart';
 import 'cat_state.dart';
-
+import 'widget/cat_item.dart';
 
 class CatScreen extends StatefulWidget {
   CatScreen({Key? key}) : super(key: key);
@@ -27,70 +26,38 @@ class _CatScreenState extends State<CatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<CatBloc, CatState>(
+      body: BlocBuilder<CatBloc, CatsState>(
         builder: (context, state) {
-          switch (state.status) {
-            case CatStatus.failure:
-              return const Center(child: Text('error'));
-            case CatStatus.succes:
-              if (state.cats.isEmpty) {
-                return const Center(child: Text('No Cats'));
-              } else {
-                return GridView.builder(
-                  controller: _scrollController,
-                  itemCount: state.hasReachedMax
-                      ? state.cats.length
-                      : state.cats.length + 1,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 300,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                  ),
-                  itemBuilder: (context, index) {
-                    return index >= state.cats.length
-                        ? const CircularProgressIndicator()
-                        : CatItem(state.cats[index]);
-                  },
-                );
-              }
-            default:
-              return const Center(child: CircularProgressIndicator());
+          if (state is CatsFailure) {
+            return Center(child: Text(state.error));
+          } else if (state is CatsLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CatsLoaded) {
+            return catList(state);
+          } else {
+            return Text('else');
           }
         },
       ),
     );
   }
 
-  Widget CatItem(Cat cat) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DetailsPage(cat: cat),
-            ),
-          ),
-          child: Hero(
-            tag: 'cat',
-            child: Image.network(
-              cat.imagUrl,
-              fit: BoxFit.cover,
-              height: 150,
-              width: 180,
-            ),
-          ),
+  GridView catList(CatsLoaded state) {
+      return GridView.builder(
+        controller: _scrollController,
+        itemCount:
+            state.hasReachedMax ? state.cats.length : state.cats.length + 1,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 300,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            cat.saved
-                ? Icon(Icons.favorite, color: Colors.red)
-                : Icon(Icons.favorite_border, color: Colors.grey),
-          ],
-        ),
-      ],
-    );
+        itemBuilder: (context, index) {
+          return index >= state.cats.length
+              ? Center(child: const CircularProgressIndicator())
+              : CatItem(cat: state.cats[index]);
+        },
+      );
   }
 
   @override
@@ -102,7 +69,7 @@ class _CatScreenState extends State<CatScreen> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<CatBloc>().add(CatFetched());
+    if (_isBottom) context.read<CatBloc>().add(FetchCats());
   }
 
   bool get _isBottom {
@@ -110,30 +77,5 @@ class _CatScreenState extends State<CatScreen> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentSrcoll = _scrollController.offset;
     return currentSrcoll >= (maxScroll * 0.9);
-  }
-}
-
-class DetailsPage extends StatelessWidget {
-  final Cat cat;
-  const DetailsPage({Key? key, required this.cat}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
-        child: Center(
-          child: Column(
-            children: [
-              Hero(
-                tag: 'cat',
-                child: Image.network(cat.imagUrl),
-              ),
-              Text(cat.catFact),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

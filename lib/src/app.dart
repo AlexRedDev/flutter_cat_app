@@ -16,8 +16,8 @@ class App extends StatelessWidget {
       home: BlocProvider(
         create: (context) => AppBloc(
           authRepository: _authRepo,
-          state: _authRepo.isAuthenticated()
-              ? Authenticated(user: _authRepo.getUser())
+          state: _authRepo.isAuthenticated
+              ? Authenticated(user: _authRepo.getUser)
               : Unauthenticated(),
         ),
         child: const AppNavigator(),

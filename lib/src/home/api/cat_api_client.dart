@@ -12,7 +12,7 @@ const String _pathCat = '';
 const String _pathFact = '';
 
 class CatApiClient {
-
+  //Todo: rewrite func
   Future<List<CatResponse>> fetchCatsResponse([int page = 0]) async {
     Map<String, String> headers = {
       'x-api-key': _apiKey,
@@ -36,7 +36,8 @@ class CatApiClient {
       throw Exception();
     }
   }
-  //Todo: replace FactResponse to simple List of String
+
+  //Todo: replace FactResponse to simple List of String and rewrite
   Future<List<FactResponse>> fetchFactResponse() async {
     Uri uri = Uri(
         scheme: _schemeUri,

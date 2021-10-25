@@ -1,19 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_cat_app/src/home/models/cat.dart';
 
-abstract class CatEvent extends Equatable {
+abstract class FavoriteEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class FetchCats extends CatEvent {}
+class LoadFavorite extends FavoriteEvent {}
 
-class AddToFavorite extends CatEvent {
+class DeleteFavorite extends FavoriteEvent {
   final Cat cat;
-  AddToFavorite(this.cat);
+  DeleteFavorite(this.cat);
 
   @override
   List<Object?> get props => [cat];
 }
 
-class UpdateCats extends CatEvent {}
+class DeleteAllFavorite extends FavoriteEvent {}

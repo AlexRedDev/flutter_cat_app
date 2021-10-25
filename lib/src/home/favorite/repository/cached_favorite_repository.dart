@@ -16,5 +16,5 @@ class CachedFavoriteRepository implements FavoriteRepository {
   void deleteAll() => hiveFavorite.deleteAll();
 
   @override
-  Future<List<Cat>> getAllCat() async => hiveFavorite.getCats();
+  Future<List<Cat>> getAllCat() => hiveFavorite.getCats();
 }

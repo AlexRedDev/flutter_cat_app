@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'favorite_cubit.dart';
+import 'package:flutter_cat_app/src/home/favorite/favorite_event.dart';
+import 'favorite_bloc.dart';
 import 'favorite_state.dart';
 
 class FavoriteScreen extends StatelessWidget {
@@ -9,7 +10,7 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<FavoriteCubit, FavoriteState>(
+      body: BlocBuilder<FavoriteBloc, FavoriteState>(
         builder: (context, state) {
           return ListView.builder(
             itemCount: state.cats.length,
@@ -21,8 +22,8 @@ class FavoriteScreen extends StatelessWidget {
                 ),
                 trailing: GestureDetector(
                   onTap: () => context
-                      .read<FavoriteCubit>()
-                      .deleteFavorite(state.cats[index]),
+                      .read<FavoriteBloc>()
+                      .add(DeleteFavorite(state.cats[index])),
                   child: state.cats[index].saved
                       ? Icon(
                           Icons.favorite,

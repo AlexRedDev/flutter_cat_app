@@ -5,7 +5,7 @@ import 'app/app_bloc.dart';
 import 'app/app_state.dart';
 import 'auth/auth_navigator_cubit.dart';
 import 'home/home_navigator_cubit.dart';
-import 'home/home_screen.dart';
+import 'home/home_navigator.dart';
 
 class AppNavigator extends StatelessWidget {
   const AppNavigator({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class AppNavigator extends StatelessWidget {
               MaterialPage(
                 child: BlocProvider(
                   create: (context) => HomeNavigatorCubit(),
-                  child: HomeScreen(),
+                  child: HomeNavigator(),
                 ),
               )
           ],
