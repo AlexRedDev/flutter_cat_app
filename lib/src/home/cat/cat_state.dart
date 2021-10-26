@@ -29,6 +29,10 @@ class CatsLoaded extends CatsState {
     );
   }
 
+  List<Cat> cloneList() {
+    return List<Cat>.from(cats);
+  }
+
   @override
   List<Object?> get props => [cats, hasReachedMax];
 }

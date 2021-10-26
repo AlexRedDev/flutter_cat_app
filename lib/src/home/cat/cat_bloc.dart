@@ -70,16 +70,14 @@ class CatBloc extends Bloc<CatEvent, CatsState> {
   ) async {
     if (state is CatsLoaded) {
       final currentState = (state as CatsLoaded);
-      final cats = List<Cat>.from(currentState.cats);
+      List<Cat> cats = currentState.cloneList();
 
-      for (var item in cats) {
-        if (item.id == event.cat.id) {
-          if (item.saved) {
-            item.saved = false;
-            break;
+      for (var i = 0; i < cats.length; i++) {
+        if (cats[i].id == event.cat.id) {
+          if (cats[i].saved) {
+            cats[i].saved = false;
           } else {
-            item.saved = true;
-            break;
+            cats[i].saved = true;
           }
         }
       }

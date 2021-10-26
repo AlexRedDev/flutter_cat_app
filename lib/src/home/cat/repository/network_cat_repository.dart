@@ -23,13 +23,13 @@ class NetworkCatRepository implements CatRepository {
         catFact: factResponse[i].fact,
       ));
     }
-    cats.forEach((element) {
-      for (var cat in catFavorite) {
-        if (element.id == cat.id) {
-          element.saved = true;
-        }
-      }
-    });
+    // cats.forEach((element) {
+    //   for (var cat in catFavorite) {
+    //     if (element.id == cat.id) {
+    //       element.saved = true;
+    //     }
+    //   }
+    // });
     return cats;
   }
 
