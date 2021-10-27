@@ -7,18 +7,24 @@ import 'app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   final AuthRepository authRepository;
 
-  AppBloc({required this.authRepository, required AppState state})
-      : super(state) {
+  AppBloc({
+    required this.authRepository,
+    required AppState state,
+  }) : super(state) {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequest>(_onLogoutRequest);
   }
 
-  void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
-    emit(Authenticated(user: event.user));
-  }
+  void _onUserChanged(
+    AppUserChanged event,
+    Emitter<AppState> emit,
+  ) =>
+      emit(Authenticated(user: event.user));
 
   Future<void> _onLogoutRequest(
-      AppLogoutRequest event, Emitter<AppState> emit) async {
+    AppLogoutRequest event,
+    Emitter<AppState> emit,
+  ) async {
     await authRepository.signOut();
     emit(Unauthenticated());
   }

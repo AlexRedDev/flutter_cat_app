@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         final formStatus = state.formStatus;
         if (formStatus is SubmissionFailed) {
-          _showSnackBar(context, formStatus.exception);
+          _showSnackBar(context, formStatus.error);
         }
       },
       child: Form(

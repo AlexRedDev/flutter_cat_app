@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "841852348133",
+    "project_id": "flutter-cat",
+    "storage_bucket": "flutter-cat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841852348133:android:47bf785399ee303b6e960c",
+        "android_client_info": {
+          "package_name": "com.example.flutter_cat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841852348133-tv82jl1vhg7qf0uilpmv890r4f9v1obv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_cat_app",
+            "certificate_hash": "cb2cd8ea271f41a439ebd8266d629ade40212313"
+          }
+        },
+        {
+          "client_id": "841852348133-b9nbji9lcb3o9807mo460lglugr9qo4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlMpS-qO-9KqmrmoBZ8m1Czxn3zXG6yk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841852348133-b9nbji9lcb3o9807mo460lglugr9qo4p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "841852348133-7d2jiafvos6gu5ep5hsh75mbcg9mjk9k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "AlexRedDev.CatApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

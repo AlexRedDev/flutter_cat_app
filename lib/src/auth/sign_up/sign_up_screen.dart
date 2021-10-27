@@ -39,7 +39,7 @@ class SignUpScreen extends StatelessWidget {
       listener: (context, state) {
         final status = state.formStatus;
         if (status is SubmissionFailed) {
-          _showSnackBar(context, status.exception);
+          _showSnackBar(context, status.error);
         }
       },
       child: Form(

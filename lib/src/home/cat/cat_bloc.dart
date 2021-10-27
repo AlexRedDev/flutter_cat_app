@@ -75,9 +75,9 @@ class CatBloc extends Bloc<CatEvent, CatsState> {
       for (var i = 0; i < cats.length; i++) {
         if (cats[i].id == event.cat.id) {
           if (cats[i].saved) {
-            cats[i].saved = false;
+            // cats[i].saved = false;
           } else {
-            cats[i].saved = true;
+            // cats[i].saved = true;
           }
         }
       }

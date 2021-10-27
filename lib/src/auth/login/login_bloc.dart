@@ -51,7 +51,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  //Todo: cath PlatformNullException
   Future<void> _onSignInWithGoogle(
     SignInWithGoogle event,
     Emitter<LoginState> emit,

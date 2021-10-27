@@ -1,5 +1,9 @@
-abstract class FormSubmissionStatus {
+import 'package:equatable/equatable.dart';
+
+abstract class FormSubmissionStatus extends Equatable{
   const FormSubmissionStatus();
+  @override
+  List<Object?> get props => [];
 }
 
 class InitialFormStatus extends FormSubmissionStatus {
@@ -11,6 +15,8 @@ class FormSubmitting extends FormSubmissionStatus {}
 class SubmissionSuccess extends FormSubmissionStatus {}
 
 class SubmissionFailed extends FormSubmissionStatus {
-  final String exception;
-  SubmissionFailed(this.exception);
+  final String error;
+  const SubmissionFailed(this.error);
+  @override
+  List<Object?> get props => [error];
 }
