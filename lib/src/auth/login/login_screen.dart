@@ -53,9 +53,17 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'Login In',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 20),
             _usernameTextFormField(),
             _passwordTextFormField(),
-            _loginButton()
+            _loginButton(),
           ],
         ),
       ),
@@ -66,7 +74,7 @@ class LoginScreen extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: TextFormField(
             validator: (value) => state.isValidEmail ? null : 'Email invalid',
             onChanged: (value) =>
@@ -74,7 +82,6 @@ class LoginScreen extends StatelessWidget {
             decoration: const InputDecoration(
               icon: Icon(Icons.person),
               label: Text('Username'),
-              border: OutlineInputBorder(),
             ),
           ),
         );
@@ -86,7 +93,7 @@ class LoginScreen extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: TextFormField(
             obscureText: true,
             validator: (_) => state.isValidPassword ? null : 'short password',
@@ -95,7 +102,6 @@ class LoginScreen extends StatelessWidget {
             decoration: const InputDecoration(
               icon: Icon(Icons.security),
               label: Text('Password'),
-              border: OutlineInputBorder(),
             ),
           ),
         );
@@ -112,14 +118,38 @@ class LoginScreen extends StatelessWidget {
             TextButton(
                 onPressed: () =>
                     context.read<LoginBloc>().add(SignInWithGoogle()),
-                child: Text('Google')),
+                child: const Text('Google')),
             TextButton(
                 onPressed: () =>
                     context.read<LoginBloc>().add(SignInWithFacebook()),
-                child: Text('Facebook')),
+                child: const Text('Facebook')),
           ],
         );
       },
+    );
+  }
+
+  Widget _loginButton() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          return state.formStatus is FormSubmitting
+              ? const CircularProgressIndicator()
+              : SizedBox(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<LoginBloc>().add(SignInWithCredentials());
+                      }
+                    },
+                    child: Text('Login'),
+                  ),
+                );
+        },
+      ),
     );
   }
 
@@ -127,22 +157,6 @@ class LoginScreen extends StatelessWidget {
     return TextButton(
         onPressed: () => context.read<AuthNavigatorCubit>().showSignUpScreen(),
         child: Text('I dont have account'));
-  }
-
-  Widget _loginButton() {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        return state.formStatus is FormSubmitting
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate())
-                    context.read<LoginBloc>().add(SignInWithCredentials());
-                },
-                child: Text('Login'),
-              );
-      },
-    );
   }
 
   void _showSnackBar(BuildContext context, String message) {

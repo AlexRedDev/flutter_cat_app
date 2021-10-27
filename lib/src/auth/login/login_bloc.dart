@@ -11,8 +11,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepository;
   final AppBloc appBloc;
 
-  LoginBloc({required this.authRepository, required this.appBloc})
-      : super(LoginState()) {
+  LoginBloc({
+    required this.authRepository,
+    required this.appBloc,
+  }) : super(const LoginState()) {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<SignInWithCredentials>(_onSignInWithCredentials);

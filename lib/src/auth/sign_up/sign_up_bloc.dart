@@ -14,7 +14,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
     required this.authRepository,
     required this.appBloc,
-  }) : super(SignUpState()) {
+  }) : super(const SignUpState()) {
     on<EmailChanged>(_onEmailChanged);
     on<PasswordChanded>(_onPasswordChanged);
     on<SignUpSubmitted>(_onSignUpSubmitted);

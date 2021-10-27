@@ -10,7 +10,7 @@ class LoginState extends Equatable {
   bool get isValidEmail => EmailValidator.validate(email);
   bool get isValidPassword => password.length >= 6;
 
-  LoginState({
+  const LoginState({
     this.email = '',
     this.password = '',
     this.formStatus = const InitialFormStatus(),

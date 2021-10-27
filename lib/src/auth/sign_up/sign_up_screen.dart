@@ -47,6 +47,14 @@ class SignUpScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'Sign Up',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 20),
             _emailTextField(),
             _passwordTextField(),
             _signUpButton(context),
@@ -59,13 +67,19 @@ class SignUpScreen extends StatelessWidget {
   Widget _emailTextField() {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
-        return TextFormField(
-          onChanged: (value) =>
-              context.read<SignUpBloc>().add(EmailChanged(value)),
-          validator: (_) => state.isValidEmail ? null : 'Email is invalid',
-          decoration: const InputDecoration(
-            label: Text('Email'),
-            icon: Icon(Icons.person),
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 12,
+          ),
+          child: TextFormField(
+            onChanged: (value) =>
+                context.read<SignUpBloc>().add(EmailChanged(value)),
+            validator: (_) => state.isValidEmail ? null : 'Email is invalid',
+            decoration: const InputDecoration(
+              label: Text('Email'),
+              icon: Icon(Icons.person),
+            ),
           ),
         );
       },
@@ -75,14 +89,21 @@ class SignUpScreen extends StatelessWidget {
   Widget _passwordTextField() {
     return BlocBuilder<SignUpBloc, SignUpState>(
       builder: (context, state) {
-        return TextFormField(
-          obscureText: true,
-          onChanged: (value) =>
-              context.read<SignUpBloc>().add(PasswordChanded(value)),
-          validator: (_) => state.isValidPassword ? null : 'Password to short',
-          decoration: const InputDecoration(
-            label: Text('Password'),
-            icon: Icon(Icons.security),
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 12,
+          ),
+          child: TextFormField(
+            obscureText: true,
+            onChanged: (value) =>
+                context.read<SignUpBloc>().add(PasswordChanded(value)),
+            validator: (_) =>
+                state.isValidPassword ? null : 'Password to short',
+            decoration: const InputDecoration(
+              label: Text('Password'),
+              icon: Icon(Icons.security),
+            ),
           ),
         );
       },
@@ -90,18 +111,25 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Widget _signUpButton(BuildContext context) {
-    return BlocBuilder<SignUpBloc, SignUpState>(
-      builder: (context, state) {
-        return state.formStatus is FormSubmitting
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<SignUpBloc>().add(SignUpSubmitted());
-                  }
-                },
-                child: const Text('Sign Up'));
-      },
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: BlocBuilder<SignUpBloc, SignUpState>(
+        builder: (context, state) {
+          return state.formStatus is FormSubmitting
+              ? const CircularProgressIndicator()
+              : SizedBox(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<SignUpBloc>().add(SignUpSubmitted());
+                        }
+                      },
+                      child: const Text('Sign Up')),
+                );
+        },
+      ),
     );
   }
 
